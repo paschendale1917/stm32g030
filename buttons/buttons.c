@@ -30,11 +30,11 @@
 
 
 uint8_t  shortpress_left=0,
-				 shortpress_right=0,
-				 shortpress_ok=0,
-				 longpress_left=0,
-				 longpress_right=0,
-				 longpress_ok=0;								 
+	 shortpress_right=0,
+	 shortpress_ok=0,
+	 longpress_left=0,
+	 longpress_right=0,
+	 longpress_ok=0;								 
 																	
 
 uint8_t flagPressed=0;
@@ -43,20 +43,20 @@ uint16_t cnt_delay=0;														//счетчик дл¤ задержек
 
 
 timer tim={.sec=0,
-					  .min=0,
-					  .hour=0
-			};
+	   .min=0,
+	   .hour=0
+	  };
 
 void buttons_init(void){   
-	SET_BIT(RCC->IOPENR,RCC_IOPENR_GPIOBEN); 								//тактирование порта B
-	MODIFY_REG(GPIOB->MODER,GPIO_MODER_MODE6,0x00<<GPIO_MODER_MODE6_Pos); 	//mode[0:0] режим входа дл¤ пина PB6
-	MODIFY_REG(GPIOB->PUPDR,GPIO_PUPDR_PUPD6,0x01<<GPIO_PUPDR_PUPD6_Pos); 	//подт¤га к питанию
+	SET_BIT(RCC->IOPENR,RCC_IOPENR_GPIOBEN); 									//тактирование порта B
+	MODIFY_REG(GPIOB->MODER,GPIO_MODER_MODE6,0x00<<GPIO_MODER_MODE6_Pos); 						//mode[0:0] режим входа дл¤ пина PB6
+	MODIFY_REG(GPIOB->PUPDR,GPIO_PUPDR_PUPD6,0x01<<GPIO_PUPDR_PUPD6_Pos); 						//подт¤га к питанию
 
-	MODIFY_REG(GPIOB->MODER,GPIO_MODER_MODE7,0x00<<GPIO_MODER_MODE7_Pos);	 //mode[0:0] режим входа дл¤ пина PB7
+	MODIFY_REG(GPIOB->MODER,GPIO_MODER_MODE7,0x00<<GPIO_MODER_MODE7_Pos);					 	//mode[0:0] режим входа дл¤ пина PB7
 	MODIFY_REG(GPIOB->PUPDR,GPIO_PUPDR_PUPD7,0x01<<GPIO_PUPDR_PUPD7_Pos);
 	
-	SET_BIT(RCC->IOPENR,RCC_IOPENR_GPIOCEN);								 //тактирование порта C
-	MODIFY_REG(GPIOC->MODER,GPIO_MODER_MODE15,0x00<<GPIO_MODER_MODE15_Pos);  //mode[0:0] режим входа дл¤ пина PC15
+	SET_BIT(RCC->IOPENR,RCC_IOPENR_GPIOCEN);								 	//тактирование порта C
+	MODIFY_REG(GPIOC->MODER,GPIO_MODER_MODE15,0x00<<GPIO_MODER_MODE15_Pos); 					 //mode[0:0] режим входа дл¤ пина PC15
 	MODIFY_REG(GPIOC->PUPDR,GPIO_PUPDR_PUPD15,0x01<<GPIO_PUPDR_PUPD15_Pos);	
 
 	SET_BIT(RCC->APBENR2,RCC_APBENR2_TIM1EN);
@@ -70,9 +70,9 @@ void buttons_init(void){
 	SET_BIT(TIM1->CR2,TIM_CR2_CCPC);
 	WRITE_REG(TIM1->CCR1,1000);
 	WRITE_REG(TIM1->PSC,TIM1_PRESCALE);
-	WRITE_REG(TIM1->ARR,TIM1_AUTORELOAD);									//TIM1->ARR = 100; 
-	NVIC_EnableIRQ(TIM1_CC_IRQn);        									//глобальное разрешeние прерываний при совпадении
-	NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);								//глобальное разрешение прерываний при переполнении и еще некоторых событи¤х(описано в stm32g030xx.h)
+	WRITE_REG(TIM1->ARR,TIM1_AUTORELOAD);										//TIM1->ARR = 100; 
+	NVIC_EnableIRQ(TIM1_CC_IRQn);        										//глобальное разрешeние прерываний при совпадении
+	NVIC_EnableIRQ(TIM1_BRK_UP_TRG_COM_IRQn);									//глобальное разрешение прерываний при переполнении и еще некоторых событи¤х(описано в stm32g030xx.h)
 	TIM_EnableCounter(TIM1);
 }
  void TIM1_CC_IRQHandler(void){
@@ -192,7 +192,7 @@ void resetButton(void){
 			break;
 		case BUTTON_UP :
 			longpress_right=0;
-		  break;
+		 	 break;
 		case BUTTON_DOWN:
 			longpress_left=0;
 			break;
