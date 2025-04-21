@@ -1,4 +1,4 @@
-//òàéìåð TIM3 íóæíî íàñòðîèòü íà ÷àñòîòó 800 êÃö
+//Ã²Ã Ã©Ã¬Ã¥Ã° TIM3 Ã­Ã³Ã¦Ã­Ã® Ã­Ã Ã±Ã²Ã°Ã®Ã¨Ã²Ã¼ Ã­Ã  Ã·Ã Ã±Ã²Ã®Ã²Ã³ 800 ÃªÃƒÃ¶
 
 
 
@@ -9,42 +9,42 @@
 #include "systick_delay.h"
 
 
-#define F_TIM3 																													64000000 	 	//çàâèñèò îò íàñòðîåê â ñåêöèè RCC
-#define F_PWM_TIM3 																											800000 			//÷àñòîòà ØÈÌ 800 000 Ãö
+#define F_TIM3 																											64000000 	 	//Ð·Ð°Ð²Ð¸ÑÐ¸Ñ‚ Ð¾Ñ‚ Ð½Ð°ÑÑ‚Ñ€Ð¾ÐµÐº Ð² ÑÐµÐºÑ†Ð¸Ð¸ RCC
+#define F_PWM_TIM3 																										800000 			//Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ð° ÐŽÂ»Ñ› 800 000 âˆšÑ†
 
-#define NUM_LEDS_MATRIX																									64
+#define NUM_LEDS_MATRIX																										64
 #define MATRIX_AMOUNT																										5
-#define NUM_LEDS  																											NUM_LEDS_MATRIX*MATRIX_AMOUNT	//êîëè÷åñòâî ñâåòîäèîäîâ
-#define NUM_BYTES           																						NUM_LEDS*3
-#define BIT_TIME																												0x0050				// 1/64000000=0,00000001562=0,01562 ìèêðîñåêóíäû äëèòñÿ 1 òèê òàéìåðà//ïî äàòàøèòó âðåìÿ äëÿ ïåðåäà÷è 1 èëè 0 äëÿ ws2812 1.25 ìêñ, îòñþäà 1,25/0,01562 =80 òèêîâ òàéìåðà òðåáóåòñÿ äëÿ ïåðåäà÷è îäíîãî áèòà//80==0x0050
-#define WS2812_1    																										BIT_TIME/3*2 	//êîëè÷åñòâî òèêîâ äëÿ ïåðåäà÷è 1(èç äàòàøèòà íà 2812 0.4 ìêñ èëè îäíà òðåòü âñåãî âðåìåíè ïîñûëêè áèòà)
-#define WS2812_0    																										BIT_TIME/3    //0.85 ìêñ
+#define NUM_LEDS  																										NUM_LEDS_MATRIX*MATRIX_AMOUNT	//ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ²ÐµÑ‚Ð¾Ð´Ð¸Ð¾Ð´Ð¾Ð²
+#define NUM_BYTES           																									NUM_LEDS*3
+#define BIT_TIME																										0x0050		// 1/64000000=0,00000001562=0,01562 Ð¼Ð¸ÐºÑ€Ð¾ÑÐµÐºÑƒÐ½Ð´Ñ‹ Ð´Ð»Ð¸Ñ‚ÑÂ¤ 1 Ñ‚Ð¸Ðº Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð°//Ð¿Ð¾ Ð´Ð°Ñ‚Ð°ÑˆÐ¸Ñ‚Ñƒ Ð²Ñ€ÐµÐ¼Â¤ Ð´Ð»Â¤ Ð¿ÐµÑ€ÐµÐ´Ð°Ñ‡Ð¸ 1 Ð¸Ð»Ð¸ 0 Ð´Ð»Â¤ ws2812 1.25 Ð¼ÐºÑ, Ð¾Ñ‚ÑÑŽÐ´Ð° 1,25/0,01562 =80 Ñ‚Ð¸ÐºÐ¾Ð² Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ð° Ñ‚Ñ€ÐµÐ±ÑƒÐµÑ‚ÑÂ¤ Ð´Ð»Â¤ Ð¿ÐµÑ€ÐµÐ´Ð°Ñ‡Ð¸ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ð±Ð¸Ñ‚Ð°//80==0x0050
+#define WS2812_1    																										BIT_TIME/3*2 	//ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ‚Ð¸ÐºÐ¾Ð² Ð´Ð»Â¤ Ð¿ÐµÑ€ÐµÐ´Ð°Ñ‡Ð¸ 1(Ð¸Ð· Ð´Ð°Ñ‚Ð°ÑˆÐ¸Ñ‚Ð° Ð½Ð° 2812 0.4 Ð¼ÐºÑ Ð¸Ð»Ð¸ Ð¾Ð´Ð½Ð° Ñ‚Ñ€ÐµÑ‚ÑŒ Ð²ÑÐµÐ³Ð¾ Ð²Ñ€ÐµÐ¼ÐµÐ½Ð¸ Ð¿Ð¾ÑÑ‹Ð»ÐºÐ¸ Ð±Ð¸Ñ‚Ð°)
+#define WS2812_0    																										BIT_TIME/3     //0.85 Ð¼ÐºÑ
 #define WS2812_RESET 																										BIT_TIME*50
 #define RESET_OFFSET																										70
 #define DATA_LENTH 				  																						(NUM_LEDS*24+RESET_OFFSET)
 
-#define HALF_TRANSFER_COMPLETE																					DMA1->ISR&DMA_ISR_HTIF1
-#define TOTAL_TRANSFER_COMPLETE																					DMA1->ISR&DMA_ISR_TCIF1
-#define RESET_HT_FLAG																						  			SET_BIT(DMA1->IFCR,DMA_IFCR_CHTIF1)
+#define HALF_TRANSFER_COMPLETE																									DMA1->ISR&DMA_ISR_HTIF1
+#define TOTAL_TRANSFER_COMPLETE																									DMA1->ISR&DMA_ISR_TCIF1
+#define RESET_HT_FLAG																						  				SET_BIT(DMA1->IFCR,DMA_IFCR_CHTIF1)
 #define RESET_TC_FLAG																										SET_BIT(DMA1->IFCR,DMA_IFCR_CTCIF1)
 
 
-#define WHITE_LED     																									0xFFFFFF
+#define WHITE_LED     																										0xFFFFFF
 #define OFF_LED      																										0x000000
-#define BLUE_LED        																								0x0000FF
-#define RED_LED         																								0xFF0000
-#define MAGENTA_LED     																								0x00F81F
-#define GREEN_LED       																								0x00ff00
-#define CYAN_LED        																								0x00FFFF
-#define YELLOW_LED      																								0xFFE000
-#define BRED_LED        																								0xF81F61
-#define GBLUE_LED      																									0x0F70F0
-#define GAINSBORO_LED       																						0xDCDCDC
-#define LIGHTBLUE_LED   																								0x007D7C
-#define ORANGE_LED                                             					0xFA2000
-#define PURPLE_LED																											0x800080
+#define BLUE_LED        																									0x0000FF
+#define RED_LED         																									0xFF0000
+#define MAGENTA_LED     																									0x00F81F
+#define GREEN_LED       																									0x00ff00
+#define CYAN_LED        																									0x00FFFF
+#define YELLOW_LED      																									0xFFE000
+#define BRED_LED        																									0xF81F61
+#define GBLUE_LED      																										0x0F70F0
+#define GAINSBORO_LED       																									0xDCDCDC
+#define LIGHTBLUE_LED   																									0x007D7C
+#define ORANGE_LED                                             																					0xFA2000
+#define PURPLE_LED																										0x800080
 #define TURQUOISE_LED																										0x40E0D0
-#define CRIMSON_LED																											0xDC143C
+#define CRIMSON_LED																										0xDC143C
 
 extern uint8_t  color_array[];
 
