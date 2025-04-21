@@ -2,33 +2,33 @@
 #include "RCC.h"
 
 void set_sysclk64(void){
-	RCC->PLLCFGR|=RCC_PLLCFGR_PLLSRC_HSI; //òàêòèðîâàíèå îò HSI16
+	RCC->PLLCFGR|=RCC_PLLCFGR_PLLSRC_HSI; //Ñ‚Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ñ‚ HSI16
 	
-	FLASH->ACR&=~FLASH_ACR_PRFTEN; //íàñòðîéêà ôëýø
+	FLASH->ACR&=~FLASH_ACR_PRFTEN; //Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ° Ñ„Ð»ÑÑˆ
 	FLASH->ACR|=FLASH_ACR_PRFTEN;
 	FLASH->ACR|=FLASH_ACR_LATENCY_2; 
 	
-	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLM_Msk;//M==1 äåëèòåëü âûõîäà PLL(HSI16/1=16)
+	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLM_Msk;//M==1 Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑŒ Ð²Ñ‹Ñ…Ð¾Ð´Ð° PLL(HSI16/1=16)
 	
-	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLN_Msk;//î÷èñòêà íà âñÿêèé ñëó÷àé
-	RCC->PLLCFGR|=RCC_PLLCFGR_PLLN_3;		//N==8 ìíîæèòåëü(PLLvco=16*8=128)
+	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLN_Msk;//Ð¾Ñ‡Ð¸ÑÑ‚ÐºÐ° Ð½Ð° Ð²ÑÑÐºÐ¸Ð¹ ÑÐ»ÑƒÑ‡Ð°Ð¹
+	RCC->PLLCFGR|=RCC_PLLCFGR_PLLN_3;		//N==8 Ð¼Ð½Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒ(PLLvco=16*8=128)
 	
-	RCC->PLLCFGR|=RCC_PLLCFGR_PLLR_0;  //R==2 äåëèòåëü PLLCLK=SYSCLK=128/2=64 MHz //óñòàíîâêà ÷àñòîòû SYSCLK
+	RCC->PLLCFGR|=RCC_PLLCFGR_PLLR_0;  //R==2 Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑŒ PLLCLK=SYSCLK=128/2=64 MHz //ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ñ‹ SYSCLK
 	
-	RCC->CFGR|=(1<<RCC_CFGR_HPRE_Pos);//AHB prescaler 1 //øèíà AHB=SYSCLK/1=64MHz
+	RCC->CFGR|=(1<<RCC_CFGR_HPRE_Pos);//AHB prescaler 1 //ÑˆÐ¸Ð½Ð° AHB=SYSCLK/1=64MHz
 	
-	MODIFY_REG(RCC->CFGR,RCC_CFGR_PPRE,0x00<<RCC_CFGR_PPRE_Pos);//APB prescaler 1;APB = 64/1=64 MHz //òàéìåðû TIM2 è TIM3 64 MHz
+	MODIFY_REG(RCC->CFGR,RCC_CFGR_PPRE,0x00<<RCC_CFGR_PPRE_Pos);//APB prescaler 1;APB = 64/1=64 MHz //Ñ‚Ð°Ð¹Ð¼ÐµÑ€Ñ‹ TIM2 Ð¸ TIM3 64 MHz
 	
-	//äåëèòåëü äëÿ íàñòðîéêè ÷àñòîòû ðàáîòû ADC
-	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLP_Msk;//î÷èñòêà íà âñÿêèé ñëó÷àé
-	RCC->PLLCFGR|=RCC_PLLCFGR_PLLP_2;//P==4 // òàêòèðîâàíèå  adc 64/4=16 MHz
+	//Ð´ÐµÐ»Ð¸Ñ‚ÐµÐ»ÑŒ Ð´Ð»Ñ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ñ‡Ð°ÑÑ‚Ð¾Ñ‚Ñ‹ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ ADC
+	RCC->PLLCFGR&=~RCC_PLLCFGR_PLLP_Msk;//Ð¾Ñ‡Ð¸ÑÑ‚ÐºÐ° Ð½Ð° Ð²ÑÑÐºÐ¸Ð¹ ÑÐ»ÑƒÑ‡Ð°Ð¹
+	RCC->PLLCFGR|=RCC_PLLCFGR_PLLP_2;//P==4 // Ñ‚Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ  adc 64/4=16 MHz
 	RCC->PLLCFGR|=RCC_PLLCFGR_PLLPEN;//PLLPCLK clock output enable
 	
 	
 
-	RCC->CR |=RCC_CR_PLLON; //çàïóñêàåì pll
+	RCC->CR |=RCC_CR_PLLON; //Ð·Ð°Ð¿ÑƒÑÐºÐ°ÐµÐ¼ pll
 	while(RCC->CR & (RCC_CR_PLLRDY));
 	RCC->PLLCFGR |= RCC_PLLCFGR_PLLREN;
-	RCC->CFGR|=RCC_CFGR_SW_1;//òàêòèðîâàíèå îò PLLRCLK 64 MHz
+	RCC->CFGR|=RCC_CFGR_SW_1;//Ñ‚Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ñ‚ PLLRCLK 64 MHz
 	
 }
